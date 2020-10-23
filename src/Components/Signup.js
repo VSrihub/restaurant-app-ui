@@ -2,6 +2,10 @@ import {
   Box,
   Button,
   Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   TextField,
   Typography,
 } from "@material-ui/core";
@@ -10,6 +14,7 @@ import Header from "./Header";
 import Home from "./Home";
 import UserSelfReg from "../media/UserSelfReg.png";
 import UserRegService from "../Service/UserRegService";
+import { Link } from "react-router-dom";
 
 export class Signup extends Component {
   constructor(props) {
@@ -22,10 +27,12 @@ export class Signup extends Component {
       userId: "",
       password: "",
       dataError: null,
+      shouldOpenDialogue: false,
     };
     // this.state.data.error = null;
     this.readForm = this.readForm.bind(this);
     this.doRegister = this.doRegister.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
 
   readForm = (e) => {
@@ -79,6 +86,9 @@ export class Signup extends Component {
       UserRegService.createUser(user).then(
         (resp) => {
           console.log(resp.data);
+
+          //update dialogue box
+          this.setState({ shouldOpenDialogue: true });
         },
         (error) => {
           console.log("error is " + error.message);
@@ -92,6 +102,10 @@ export class Signup extends Component {
     } else {
       console.log("data is invalid");
     }
+  };
+
+  handleClose = () => {
+    this.setState({ shouldOpenDialogue: false });
   };
 
   render() {
@@ -204,6 +218,38 @@ export class Signup extends Component {
               Register
             </Button>
           </Box>
+
+          {/* Dialogue Box to show the User Registration has confirmed */}
+          <Dialog
+            onClose={this.handleClose}
+            aria-labelledby="customized-dialog-title"
+            open={this.state.shouldOpenDialogue}
+          >
+            <DialogTitle
+              id="customized-dialog-title"
+              onClose={this.handleClose}
+            >
+              <Typography color="primary">
+                User Registration Successfull
+              </Typography>
+            </DialogTitle>
+            <DialogContent dividers>
+              <Typography gutterBottom>
+                A Verification Email has been sent to you email:
+                {this.state.email}
+                Please Click on Verification Link and Activate the account
+              </Typography>
+              <Typography gutterBottom>
+                If already activated, Please Click on
+                <Link to="/login">Here</Link> to Login
+              </Typography>
+            </DialogContent>
+            <DialogActions>
+              <Button autoFocus onClick={this.handleClose} color="primary">
+                close
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Container>
       </div>
     );
