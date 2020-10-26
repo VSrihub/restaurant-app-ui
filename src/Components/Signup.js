@@ -26,6 +26,8 @@ export class Signup extends Component {
       email: "",
       userId: "",
       password: "",
+      cpassword: "",
+      mobile: "",
       dataError: null,
       shouldOpenDialogue: false,
     };
@@ -33,7 +35,7 @@ export class Signup extends Component {
     this.readForm = this.readForm.bind(this);
     this.doRegister = this.doRegister.bind(this);
     this.handleClose = this.handleClose.bind(this);
-  }
+  } //constructor end
 
   readForm = (e) => {
     //console.log(e.target.value);
@@ -51,10 +53,12 @@ export class Signup extends Component {
     //step-2
     this.state.email_error = null;
     this.state.password_error = null;
+    this.state.cpassword_error = null;
 
     // step-1
     let email = this.state.email;
     let password = this.state.password;
+    let cpassword = this.state.cpassword;
 
     //step-4
     if (email == null || email == "") {
@@ -64,6 +68,18 @@ export class Signup extends Component {
 
     if (password == null || password == "") {
       this.state.password_error = "Password should not be empty or null";
+      dataVlaid = false;
+    }
+
+    if (cpassword == null || cpassword == "") {
+      this.state.password_error =
+        "Confirm Password should not be empty or null";
+      dataVlaid = false;
+    }
+
+    if (!(password == cpassword)) {
+      this.state.cpassword_error =
+        "Password and Confirm Password should be match";
       dataVlaid = false;
     }
 
@@ -79,6 +95,8 @@ export class Signup extends Component {
         email: this.state.email,
         userId: this.state.userId,
         password: this.state.password,
+        cpassword: this.state.cpassword,
+        mobile: this.state.mobile,
       };
       console.log("user registration data is");
       console.log(JSON.stringify(user));
@@ -206,6 +224,34 @@ export class Signup extends Component {
               onChange={this.readForm}
               error={this.state.password_error != null}
               helperText={this.state.password_error}
+            />
+            <TextField
+              id="outlined-required"
+              label="Confirm Password"
+              // defaultValue="Hello World"
+              variant="outlined"
+              type="password"
+              color="primary"
+              fullWidth
+              margin="normal"
+              size="normal"
+              name="cpassword"
+              onChange={this.readForm}
+              error={this.state.cpassword_error != null}
+              helperText={this.state.cpassword_error}
+            />
+            <TextField
+              id="outlined-required"
+              label="Mobile"
+              // defaultValue="Hello World"
+              variant="outlined"
+              type="text"
+              color="primary"
+              fullWidth
+              margin="normal"
+              size="normal"
+              name="mobile"
+              onChange={this.readForm}
             />
             <br />
             <br />
