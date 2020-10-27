@@ -15,5 +15,26 @@ class UserRegService {
 
     return axios.post(USER_REG_BASE_URL + "/user-reg", regData, options);
   }
+
+  fetchUserByEmail(email) {
+    console.log("email is " + email);
+    return axios.get(USER_REG_BASE_URL + "/user-reg/" + email);
+  }
+
+  changePassword(userData) {
+    console.log(
+      "i am in service and  the  change password data is " + userData
+    );
+    let options = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    return axios.post(
+      USER_REG_BASE_URL + "/user-reg/changePwd",
+      userData,
+      options
+    );
+  }
 }
 export default new UserRegService();
