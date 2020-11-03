@@ -198,8 +198,8 @@ export default function Header() {
             color="primary"
             variant="outlined"
             className={classes.link}
-            // onClick={handleLoginButton}
-            href="http://localhost:6051/authn-service/api/token"
+            onClick={handleLoginButton}
+            // href="http://localhost:6051/authn-service/api/token"
           >
             Login
           </Button>

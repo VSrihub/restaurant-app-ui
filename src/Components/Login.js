@@ -53,6 +53,7 @@ export class Login extends Component {
       (resp) => {
         console.log("login resp is " + JSON.stringify(resp.data));
         //render the dashboard if the authenticated is true
+        this.props.history.push("/dashboard");
       },
       (error) => {
         console.log(error.data);

@@ -5,8 +5,9 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Home from "./Components/Home";
 import Login from "./Components/Login";
 import Signup from "./Components/Signup";
-import Dashboard from "./Components/Dashboard";
+import Dashboard from "./Components/CustomerDashboard";
 import VerifyAccount from "./Components/VerifyAccount";
+import CustomerDashboard from "./Components/CustomerDashboard";
 
 function MainRouter() {
   return (
@@ -16,7 +17,7 @@ function MainRouter() {
           <Route exact path="/" component={Home} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />
-          <Route exact path="/dashboard" component={Dashboard} />
+          <Route exact path="/dashboard" component={CustomerDashboard} />
           <Route exact path="/user-reg/:email" component={VerifyAccount} />
         </Switch>
       </BrowserRouter>
