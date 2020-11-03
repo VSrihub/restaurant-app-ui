@@ -66,22 +66,22 @@ export class Signup extends Component {
       dataVlaid = false;
     }
 
-    if (password == null || password == "") {
-      this.state.password_error = "Password should not be empty or null";
-      dataVlaid = false;
-    }
+    // if (password == null || password == "") {
+    //   this.state.password_error = "Password should not be empty or null";
+    //   dataVlaid = false;
+    // }
 
-    if (cpassword == null || cpassword == "") {
-      this.state.password_error =
-        "Confirm Password should not be empty or null";
-      dataVlaid = false;
-    }
+    // if (cpassword == null || cpassword == "") {
+    //   this.state.password_error =
+    //     "Confirm Password should not be empty or null";
+    //   dataVlaid = false;
+    // }
 
-    if (!(password == cpassword)) {
-      this.state.cpassword_error =
-        "Password and Confirm Password should be match";
-      dataVlaid = false;
-    }
+    // if (!(password == cpassword)) {
+    //   this.state.cpassword_error =
+    //     "Password and Confirm Password should be match";
+    //   dataVlaid = false;
+    // }
 
     //update the state when the form is submitted
     this.setState({
@@ -94,8 +94,8 @@ export class Signup extends Component {
         lname: this.state.lname,
         email: this.state.email,
         userId: this.state.userId,
-        password: this.state.password,
-        cpassword: this.state.cpassword,
+        password: "dummy@123",
+        cpassword: "dummy@123",
         mobile: this.state.mobile,
       };
       console.log("user registration data is");
@@ -210,7 +210,7 @@ export class Signup extends Component {
               name="userId"
               onChange={this.readForm}
             />
-            <TextField
+            {/* <TextField
               id="outlined-required"
               label="Password"
               // defaultValue="Hello World"
@@ -239,7 +239,7 @@ export class Signup extends Component {
               onChange={this.readForm}
               error={this.state.cpassword_error != null}
               helperText={this.state.cpassword_error}
-            />
+            /> */}
             <TextField
               id="outlined-required"
               label="Mobile"

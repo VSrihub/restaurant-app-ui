@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import UserRegService from "../Service/UserRegService";
 import Changepassword from "./Changepassword";
+import Login from "./Login";
 
 export class VerifyAccount extends Component {
   constructor(props) {
@@ -49,7 +50,12 @@ export class VerifyAccount extends Component {
   }
 
   render() {
-    return <div>{this.state.showChangePwdForm && <Changepassword />}</div>;
+    return (
+      <div>
+        {this.state.showChangePwdForm && <Changepassword />}
+        {this.state.showLoginForm && <Login />}
+      </div>
+    );
   }
 }
 

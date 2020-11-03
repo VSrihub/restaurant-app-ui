@@ -5,7 +5,9 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
+import { Router } from "@material-ui/icons";
 import React, { Component } from "react";
+import { Link, Redirect, Route } from "react-router-dom";
 import UserRegService from "../Service/UserRegService";
 import Header from "./Header";
 
@@ -16,6 +18,7 @@ export class Changepassword extends Component {
     this.state = {
       password: "",
       cpassword: "",
+      doesPwdChanged: false,
     };
     this.doPasswordChange = this.doPasswordChange.bind(this);
     this.readForm = this.readForm.bind(this);
@@ -40,7 +43,9 @@ export class Changepassword extends Component {
     UserRegService.changePassword(userData).then(
       (resp) => {
         let doespwdChanged = resp.data.pwdChanged;
-        console.log("does password changed  " + doespwdChanged);
+        console.log("response id " + resp.data.pwdChanged);
+        this.setState({ doesPwdChanged: true });
+        console.log("does password changed  " + this.state.doesPwdChanged);
       },
       (error) => {
         console.log("error is " + error.data);
@@ -54,9 +59,14 @@ export class Changepassword extends Component {
   };
 
   render() {
+    const { doesPwdChanged } = this.state;
+    if (doesPwdChanged) {
+      return <Redirect to="/login" />;
+    }
     return (
       <div>
         <Header />
+
         <Container maxWidth="sm">
           <Box
             bgcolor="white"

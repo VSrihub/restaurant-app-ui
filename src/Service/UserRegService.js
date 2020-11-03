@@ -18,7 +18,7 @@ class UserRegService {
 
   fetchUserByEmail(email) {
     console.log("email is " + email);
-    return axios.get(USER_REG_BASE_URL + "/user-reg/" + email);
+    return axios.get(USER_REG_BASE_URL + "/user-reg/verifyAccount/" + email);
   }
 
   changePassword(userData) {
