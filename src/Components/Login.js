@@ -29,6 +29,7 @@ export class Login extends Component {
       eamil: "",
       password: "",
       authnMethod: "",
+      role: "",
     };
 
     this.readForm = this.readForm.bind(this);
@@ -53,7 +54,13 @@ export class Login extends Component {
       (resp) => {
         console.log("login resp is " + JSON.stringify(resp.data));
         //render the dashboard if the authenticated is true
-        this.props.history.push("/dashboard");
+        // this.state.role = 'customer';
+        this.state.role = "merchant";
+        if (this.state.role == "customer") {
+          this.props.history.push("/dashboard");
+        } else if (this.state.role == "merchant") {
+          this.props.history.push("/merchantDashboard");
+        }
       },
       (error) => {
         console.log(error.data);
