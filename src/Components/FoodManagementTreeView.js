@@ -5,6 +5,7 @@ import { fade, makeStyles, withStyles } from "@material-ui/core/styles";
 import TreeView from "@material-ui/lab/TreeView";
 import TreeItem from "@material-ui/lab/TreeItem";
 import Collapse from "@material-ui/core/Collapse";
+import { useHistory } from "react-router-dom";
 //import { useSpring, animated } from "react-spring/web.cjs"; // web.cjs is required for IE 11 support
 
 function MinusSquare(props) {
@@ -77,16 +78,37 @@ const StyledTreeItem = withStyles((theme) => ({
   <TreeItem {...props} TransitionComponent={TransitionComponent} />
 ));
 
-const useStyles = makeStyles({
+// const useStyles = makeStyles({
+//   root: {
+//     height: 264,
+//     flexGrow: 1,
+//     maxWidth: 400,
+//   },
+// });
+
+const useStyles = makeStyles((theme) => ({
+  // root: {
+  //   height: 100,
+  //   flexGrow: 1,
+  //   maxWidth: 400,
+  // },
   root: {
-    height: 264,
-    flexGrow: 1,
-    maxWidth: 400,
+    // display: "flex",
+    width: "100%",
+    maxWidth: 360,
+    marginRight: theme.spacing(2),
+    backgroundColor: theme.palette.background.paper,
   },
-});
+}));
 
 export default function FoodManagementTreeView() {
   const classes = useStyles();
+  const history = useHistory();
+
+  const renderCategory = () => {
+    console.log("i am in render Category");
+    history.push("addCategory");
+  };
 
   return (
     <TreeView
@@ -97,7 +119,11 @@ export default function FoodManagementTreeView() {
       defaultEndIcon={<CloseSquare />}
     >
       <StyledTreeItem nodeId="1" label="Manage Category">
-        <StyledTreeItem nodeId="2" label="Add Category" />
+        <StyledTreeItem
+          nodeId="2"
+          label="Add Category"
+          onClick={renderCategory}
+        />
         <StyledTreeItem nodeId="3" label="Category List" />
       </StyledTreeItem>
 

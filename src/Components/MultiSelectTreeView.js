@@ -10,13 +10,19 @@ import AddCircleOutlineTwoToneIcon from "@material-ui/icons/AddCircleOutlineTwoT
 import CustomizedTreeView from "./CustomizedTreeView";
 import FoodManagementTreeView from "./FoodManagementTreeView";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
+  // root: {
+  //   height: 100,
+  //   flexGrow: 1,
+  //   maxWidth: 400,
+  // },
   root: {
-    height: 100,
-    flexGrow: 1,
-    maxWidth: 400,
+    display: "flex",
+    width: "100%",
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper,
   },
-});
+}));
 
 export default function MultiSelectTreeView() {
   const classes = useStyles();
