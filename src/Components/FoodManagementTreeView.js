@@ -110,6 +110,11 @@ export default function FoodManagementTreeView() {
     history.push("addCategory");
   };
 
+  const viewCategories = () => {
+    console.log("view categories list");
+    history.push("viewCategory");
+  };
+
   return (
     <TreeView
       className={classes.root}
@@ -124,7 +129,11 @@ export default function FoodManagementTreeView() {
           label="Add Category"
           onClick={renderCategory}
         />
-        <StyledTreeItem nodeId="3" label="Category List" />
+        <StyledTreeItem
+          nodeId="3"
+          label="Category List"
+          onClick={viewCategories}
+        />
       </StyledTreeItem>
 
       <StyledTreeItem nodeId="4" label="Manage Food">

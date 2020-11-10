@@ -21,20 +21,20 @@ import CategoryService from "../../Service/CategoryService";
  * this shuld be the dyncmic list to show the
  * categories in the drop down
  */
-const patCategoryList = [
-  {
-    value: "Select option",
-    label: "Select option",
-  },
-  {
-    value: "Biryani",
-    label: "Biryani",
-  },
-  {
-    value: "Salads",
-    label: "Salads",
-  },
-];
+// const patCategoryList = [
+//   {
+//     value: "Select option",
+//     label: "Select option",
+//   },
+//   {
+//     value: "Biryani",
+//     label: "Biryani",
+//   },
+//   {
+//     value: "Salads",
+//     label: "Salads",
+//   },
+// ];
 
 /**
  * this can be the static dropdown
@@ -62,6 +62,7 @@ export class AddCategory extends Component {
       isOffer: "",
       status: "Active",
       checked: false,
+      patCategoryList: [],
     };
     // this.state.data.error = null;
     this.readForm = this.readForm.bind(this);
@@ -73,6 +74,14 @@ export class AddCategory extends Component {
     //console.log(e.target.value);
     this.setState({ [e.target.name]: e.target.value });
   };
+
+  componentDidMount() {
+    CategoryService.fetchAllCategories().then((resp) => {
+      console.log("backend categories are " + JSON.stringify(resp.data));
+      //this.state.catList = resp.data;
+      this.setState({ patCategoryList: resp.data });
+    });
+  }
 
   doAddCategory = (e) => {
     e.preventDefault();
@@ -162,9 +171,12 @@ export class AddCategory extends Component {
               helperText="Select the Parent Category"
               variant="outlined"
             >
-              {patCategoryList.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
+              <option value="Select Parent Category">
+                Select Parent Category
+              </option>
+              {this.state.patCategoryList.map((option) => (
+                <option key={option.catName} value={option.catName}>
+                  {option.catName}
                 </option>
               ))}
             </TextField>

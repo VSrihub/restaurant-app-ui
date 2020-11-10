@@ -1,4 +1,14 @@
-import { Grid, Paper } from "@material-ui/core";
+import {
+  Button,
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  CardMedia,
+  Grid,
+  Paper,
+  Typography,
+} from "@material-ui/core";
 import { Sync } from "@material-ui/icons";
 import React, { Component } from "react";
 import CategoryService from "../../Service/CategoryService";
@@ -31,13 +41,41 @@ export class ViewCategory extends Component {
           {this.state.catList.map((category) => (
             <Grid item xs={6} sm={3}>
               <Paper>
-                <CategoryListGrid />
+                {/* <CategoryListGrid /> */}
+                <Card>
+                  <CardActionArea>
+                    <CardMedia
+                      image="/static/images/cards/contemplative-reptile.jpg"
+                      title="Contemplative Reptile"
+                    />
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="h2">
+                        {category.catName}
+                      </Typography>
+                      {/* <Typography
+                        variant="body2"
+                        color="textSecondary"
+                        component="p"
+                      >
+                        Lizards are a widespread group of squamate reptiles,
+                        with over 6,000 species, ranging across all continents
+                        except Antarctica
+                      </Typography> */}
+                    </CardContent>
+                  </CardActionArea>
+                  <CardActions>
+                    <Button size="small" color="primary">
+                      Offer Available: {category.offer}
+                    </Button>
+                    <Button size="small" color="primary">
+                      {category.status}
+                    </Button>
+                  </CardActions>
+                </Card>
               </Paper>
             </Grid>
           ))}
         </Grid>
-        {/* <CategoryListGrid /> */}
-        <h3>display all categories here</h3>
       </div>
     );
   }
