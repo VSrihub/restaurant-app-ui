@@ -20,5 +20,13 @@ class CategoryService {
   fetchAllCategories() {
     return axios.get(CATEGORY_BASE_URL);
   }
+
+  deleteCategory(id) {
+    return axios.delete(CATEGORY_BASE_URL + "/" + id);
+  }
+
+  getCategory(id) {
+    return axios.get(CATEGORY_BASE_URL + "/" + id);
+  }
 }
 export default new CategoryService();
