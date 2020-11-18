@@ -59,7 +59,7 @@ export class AddCategory extends Component {
       catName: "",
       patCat: "",
       image: "",
-      isOffer: "",
+      isOffer: false,
       status: "Active",
       checked: false,
       patCategoryList: [],

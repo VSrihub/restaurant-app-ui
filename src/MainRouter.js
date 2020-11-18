@@ -11,6 +11,8 @@ import CustomerDashboard from "./Components/CustomerDashboard";
 import MerchantDashboard from "./Components/MerchantDashboard";
 import AddCategory from "./Components/manage_category/AddCategory";
 import ViewCategory from "./Components/manage_category/ViewCategory";
+import AddFood from "./Components/manage_food/AddFood";
+import ViewFood from "./Components/manage_food/ViewFood";
 
 function MainRouter() {
   return (
@@ -24,11 +26,14 @@ function MainRouter() {
           <Route exact path="/user-reg/:email" component={VerifyAccount} />
           <Route exact path="/addCategory" component={AddCategory} />
           <Route exact path="/viewCategory" component={ViewCategory} />
+          <Route exact path="/addFood" component={AddFood} />
+          <Route exact path="/viewFood" component={ViewFood} />
           <Route
             exact
             path="/merchantDashboard"
             component={MerchantDashboard}
           />
+          <Route exact path="/customer" component={CustomerDashboard} />
         </Switch>
       </BrowserRouter>
     </div>

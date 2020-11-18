@@ -6,6 +6,7 @@ import TreeView from "@material-ui/lab/TreeView";
 import TreeItem from "@material-ui/lab/TreeItem";
 import Collapse from "@material-ui/core/Collapse";
 import { useHistory } from "react-router-dom";
+import ViewFood from "./manage_food/ViewFood";
 //import { useSpring, animated } from "react-spring/web.cjs"; // web.cjs is required for IE 11 support
 
 function MinusSquare(props) {
@@ -110,9 +111,18 @@ export default function FoodManagementTreeView() {
     history.push("addCategory");
   };
 
+  const addFood = () => {
+    console.log("i am in add Food event of Food management Tree view");
+    history.push("addFood");
+  };
+
   const viewCategories = () => {
     console.log("view categories list");
     history.push("viewCategory");
+  };
+  const ViewFood = () => {
+    console.log("view food list");
+    history.push("ViewFood");
   };
 
   return (
@@ -137,8 +147,8 @@ export default function FoodManagementTreeView() {
       </StyledTreeItem>
 
       <StyledTreeItem nodeId="4" label="Manage Food">
-        <StyledTreeItem nodeId="5" label="Add Food" />
-        <StyledTreeItem nodeId="6" label="Food List" />
+        <StyledTreeItem nodeId="5" label="Add Food" onClick={addFood} />
+        <StyledTreeItem nodeId="6" label="Food List" onClick={ViewFood} />
         <StyledTreeItem nodeId="7" label="Food Varient" />
         <StyledTreeItem nodeId="8" label="Food Availability" />
       </StyledTreeItem>

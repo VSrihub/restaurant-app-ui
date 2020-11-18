@@ -15,21 +15,65 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
-import CategoryIcon from "@material-ui/icons/Category";
-import RestaurantMenuIcon from "@material-ui/icons/RestaurantMenu";
-import FastfoodIcon from "@material-ui/icons/Fastfood";
-import EventSeatIcon from "@material-ui/icons/EventSeat";
+
 import PaymentIcon from "@material-ui/icons/Payment";
 import ReceiptIcon from "@material-ui/icons/Receipt";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
+import EventSeatRoundedIcon from "@material-ui/icons/EventSeatRounded";
+import MotorcycleRoundedIcon from "@material-ui/icons/MotorcycleRounded";
+
+import MultiSelectTreeView from "./MultiSelectTreeView";
+import { useEffect } from "react";
+import FoodService from "../Service/FoodService";
+import {
+  Avatar,
+  Button,
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  CardHeader,
+  CardMedia,
+  Collapse,
+  Grid,
+  Paper,
+} from "@material-ui/core";
+import EditIcon from "@material-ui/icons/Edit";
+import LocalOfferIcon from "@material-ui/icons/LocalOffer";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import ShareIcon from "@material-ui/icons/Share";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ViewFood from "./manage_food/ViewFood";
+import { ExpandLess, ExpandMore, StarBorder } from "@material-ui/icons";
+import FoodCard from "./manage_food/FoodCard";
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
+    width: "100%",
+    maxWidth: 345,
+
+    backgroundColor: theme.palette.background.paper,
+  },
+  FoodCard_Root: {
+    flexGrow: 5,
+  },
+  paper: {
+    padding: theme.spacing(8),
+    textAlign: "center",
+    color: theme.palette.text.secondary,
+  },
+
+  nested: {
+    paddingLeft: theme.spacing(4),
+  },
+  nestedCategory: {
+    paddingLeft: theme.spacing(6),
   },
   appBar: {
     transition: theme.transitions.create(["margin", "width"], {
@@ -88,7 +132,11 @@ export default function CustomerDashboard() {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-
+  const [openMenu, setOpenMenu] = React.useState(false);
+  const [openCategory, setOpenCategory] = React.useState(false);
+  const [openFoodCategory, setOpenFodCategory] = React.useState(false);
+  const [foodList, setFoodList] = React.useState([]);
+  const [expanded, setExpanded] = React.useState(false);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -96,6 +144,34 @@ export default function CustomerDashboard() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const handleClick = () => {
+    setOpenMenu(!openMenu);
+  };
+
+  const handleCategory = () => {
+    setOpenCategory(!openCategory);
+  };
+
+  const handleFoodCategory = () => {
+    setOpenFodCategory(!openFoodCategory);
+  };
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+  // Similar to componentDidMount and componentDidUpdate:
+  useEffect(() => {
+    FoodService.fetchAllFoods().then(
+      (resp) => {
+        setFoodList(resp.data);
+      },
+      (error) => {
+        console.error(error.data);
+      }
+    );
+    console.log("food list is " + JSON.stringify(foodList));
+  });
 
   return (
     <div className={classes.root}>
@@ -117,7 +193,7 @@ export default function CustomerDashboard() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Barbequenation
+            Customer Barbequenation
           </Typography>
         </Toolbar>
       </AppBar>
@@ -140,43 +216,49 @@ export default function CustomerDashboard() {
           </IconButton>
         </div>
         <Divider />
-
+        {/* <MultiSelectTreeView /> */}
         <List>
-          <ListItem button key="Dish Category">
+          <ListItem button key="Orders" onClick={handleClick}>
             <ListItemIcon>
-              <CategoryIcon />
+              <MotorcycleRoundedIcon />
             </ListItemIcon>
-            <ListItemText primary="Dish Category" />
+            <ListItemText primary="Orders" />
+            {openMenu ? <ExpandMore /> : <ExpandLess />}
           </ListItem>
-          <ListItem button key="Starters">
-            <ListItemIcon>
-              <FastfoodIcon />
-            </ListItemIcon>
-            <ListItemText primary="Starters" />
-          </ListItem>
-          <ListItem button key="Desserts">
-            <ListItemIcon>
-              <RestaurantMenuIcon />
-            </ListItemIcon>
-            <ListItemText primary="Desserts" />
-          </ListItem>
+          {/* 
+            This is used to Open a sub menu when we click on Orders Menu 
+           */}
+          <Collapse in={openMenu} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <ListItem button className={classes.nested}>
+                <ListItemIcon>
+                  <StarBorder />
+                </ListItemIcon>
+                <ListItemText primary="View My Orders" />
+              </ListItem>
+              <ListItem button className={classes.nested}>
+                <ListItemIcon>
+                  <StarBorder />
+                </ListItemIcon>
+                <ListItemText primary="Place Orders" />
+              </ListItem>
+            </List>
+          </Collapse>
           <ListItem button key="Reservations">
             <ListItemIcon>
-              <EventSeatIcon />
+              <EventSeatRoundedIcon />
             </ListItemIcon>
             <ListItemText primary="Reservations" />
+          </ListItem>
+          <ListItem button key="Notifications">
+            <ListItemIcon>
+              <NotificationsActiveIcon />
+            </ListItemIcon>
+            <ListItemText primary="Notifications" />
           </ListItem>
         </List>
         <Divider />
         <List>
-          {/* {["All mail", "Trash", "Spam"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))} */}
           <ListItem button key="Payments">
             <ListItemIcon>
               <PaymentIcon />
@@ -203,36 +285,23 @@ export default function CustomerDashboard() {
         })}
       >
         <div className={classes.drawerHeader} />
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
-          dolor purus non enim praesent elementum facilisis leo vel. Risus at
-          ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum
-          quisque non tellus. Convallis convallis tellus id interdum velit
-          laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed
-          adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies
-          integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate
-          eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo
-          quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat
-          vivamus at augue. At augue eget arcu dictum varius duis at consectetur
-          lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa sapien
-          faucibus et molestie ac.
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-          ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar
-          elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse
-          sed nisi lacus sed viverra tellus. Purus sit amet volutpat consequat
-          mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis
-          risus sed vulputate odio. Morbi tincidunt ornare massa eget egestas
-          purus viverra accumsan in. In hendrerit gravida rutrum quisque non
-          tellus orci ac. Pellentesque nec nam aliquam sem et tortor. Habitant
-          morbi tristique senectus et. Adipiscing elit duis tristique
-          sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
       </main>
+      <div className={classes.FoodCard_Root}>
+        <Grid container>
+          {foodList.map((food) => (
+            <Grid item xs={3}>
+              <Typography noWrap>
+                <FoodCard />
+              </Typography>
+            </Grid>
+          ))}
+        </Grid>
+        {/* </div> */}
+        {/* <FoodCard />
+        <FoodCard />
+        <FoodCard />
+        <FoodCard /> */}
+      </div>
     </div>
   );
 }

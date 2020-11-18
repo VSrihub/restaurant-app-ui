@@ -15,27 +15,35 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
-import CategoryIcon from "@material-ui/icons/Category";
-import RestaurantMenuIcon from "@material-ui/icons/RestaurantMenu";
-import FastfoodIcon from "@material-ui/icons/Fastfood";
-import EventSeatIcon from "@material-ui/icons/EventSeat";
+
 import PaymentIcon from "@material-ui/icons/Payment";
 import ReceiptIcon from "@material-ui/icons/Receipt";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import FormatListBulletedTwoToneIcon from "@material-ui/icons/FormatListBulletedTwoTone";
-import AddCircleOutlineTwoToneIcon from "@material-ui/icons/AddCircleOutlineTwoTone";
-import EventAvailableIcon from "@material-ui/icons/EventAvailable";
-import AdjustIcon from "@material-ui/icons/Adjust";
-import {
-  ExpandLess,
-  ExpandMore,
-  FastfoodTwoTone,
-  StarBorder,
-} from "@material-ui/icons";
-import { Collapse } from "@material-ui/core";
+
 import MultiSelectTreeView from "./MultiSelectTreeView";
+import { useEffect } from "react";
+import FoodService from "../Service/FoodService";
+import {
+  Avatar,
+  Button,
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  CardHeader,
+  CardMedia,
+  Collapse,
+  Grid,
+  Paper,
+} from "@material-ui/core";
+import EditIcon from "@material-ui/icons/Edit";
+import LocalOfferIcon from "@material-ui/icons/LocalOffer";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import ShareIcon from "@material-ui/icons/Share";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ViewFood from "./manage_food/ViewFood";
 
 const drawerWidth = 240;
 
@@ -43,9 +51,10 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     width: "100%",
-    maxWidth: 360,
+    maxWidth: 345,
     backgroundColor: theme.palette.background.paper,
   },
+
   nested: {
     paddingLeft: theme.spacing(4),
   },
@@ -112,7 +121,8 @@ export default function MerchantDashboard() {
   const [openMenu, setOpenMenu] = React.useState(false);
   const [openCategory, setOpenCategory] = React.useState(false);
   const [openFoodCategory, setOpenFodCategory] = React.useState(false);
-
+  const [foodList, setFoodList] = React.useState([]);
+  const [expanded, setExpanded] = React.useState(false);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -132,6 +142,22 @@ export default function MerchantDashboard() {
   const handleFoodCategory = () => {
     setOpenFodCategory(!openFoodCategory);
   };
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+  // Similar to componentDidMount and componentDidUpdate:
+  useEffect(() => {
+    FoodService.fetchAllFoods().then(
+      (resp) => {
+        setFoodList(resp.data);
+      },
+      (error) => {
+        console.error(error.data);
+      }
+    );
+    console.log("food list is " + JSON.stringify(foodList));
+  });
 
   return (
     <div className={classes.root}>
@@ -177,105 +203,8 @@ export default function MerchantDashboard() {
         </div>
         <Divider />
         <MultiSelectTreeView />
-
-        {/* <List>
-          <ListItem button onClick={handleClick}>
-            <ListItemIcon>
-              <RestaurantMenuIcon />
-            </ListItemIcon>
-            <ListItemText primary="Food" />
-            {openMenu ? <ExpandMore /> : <ExpandLess />}
-          </ListItem>
-          <Collapse in={openMenu} timeout="auto" unmountOnExit>
-            <List component="div" disablePadding>
-              <ListItem
-                button
-                className={classes.nested}
-                onClick={handleCategory}
-              >
-                <ListItemIcon>
-                  <CategoryIcon />
-                </ListItemIcon>
-                <ListItemText primary="Manage Category" />
-                {openCategory ? <ExpandMore /> : <ExpandLess />}
-              </ListItem>
-              <Collapse in={openCategory} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                  <ListItem button className={classes.nestedCategory}>
-                    <ListItemIcon>
-                      <AddCircleOutlineTwoToneIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Add Category" />
-                  </ListItem>
-                  <ListItem button className={classes.nestedCategory}>
-                    <ListItemIcon>
-                      <FormatListBulletedTwoToneIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Category List" />
-                  </ListItem>
-                </List>
-              </Collapse>
-
-              <ListItem
-                button
-                className={classes.nested}
-                onClick={handleFoodCategory}
-              >
-                <ListItemIcon>
-                  <FastfoodTwoTone />
-                </ListItemIcon>
-                <ListItemText primary="Manage Food" />
-                {openFoodCategory ? <ExpandMore /> : <ExpandLess />}
-              </ListItem>
-              <Collapse in={openFoodCategory} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                  <ListItem button className={classes.nestedCategory}>
-                    <ListItemIcon>
-                      <AddCircleOutlineTwoToneIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Add Food" />
-                  </ListItem>
-                  <ListItem button className={classes.nestedCategory}>
-                    <ListItemIcon>
-                      <FormatListBulletedTwoToneIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Food List" />
-                  </ListItem>
-                  <ListItem button className={classes.nestedCategory}>
-                    <ListItemIcon>
-                      <AdjustIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Food Varient" />
-                  </ListItem>
-                  <ListItem button className={classes.nestedCategory}>
-                    <ListItemIcon>
-                      <EventAvailableIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Food Availability" />
-                  </ListItem>
-                </List>
-              </Collapse>
-            </List>
-          </Collapse>
-
-          <ListItem button key="Reservations">
-            <ListItemIcon>
-              <EventSeatIcon />
-            </ListItemIcon>
-            <ListItemText primary="Reservations" />
-          </ListItem>
-        </List> */}
-        {/* <CustomizedTreeView /> */}
         <Divider />
         <List>
-          {/* {["All mail", "Trash", "Spam"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))} */}
           <ListItem button key="Payments">
             <ListItemIcon>
               <PaymentIcon />

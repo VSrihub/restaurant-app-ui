@@ -17,6 +17,19 @@ class CategoryService {
     return axios.post(CATEGORY_BASE_URL, categoryObj, options);
   }
 
+  updateCategory(categoryObj) {
+    /**
+     * the way of sending the headers and token to the backend api
+     */
+    let options = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    return axios.put(CATEGORY_BASE_URL, categoryObj, options);
+  }
+
   fetchAllCategories() {
     return axios.get(CATEGORY_BASE_URL);
   }

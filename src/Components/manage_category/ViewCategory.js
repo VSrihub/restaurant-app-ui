@@ -55,13 +55,6 @@ export class ViewCategory extends Component {
         status: "Active",
         checked: false,
       },
-      id: "",
-      catName: "",
-      patCat: "",
-      image: "",
-      offer: "",
-      status: "Active",
-      checked: false,
     };
     this.deleteCategory = this.deleteCategory.bind(this);
     this.editCategory = this.editCategory.bind(this);
@@ -70,7 +63,10 @@ export class ViewCategory extends Component {
 
   readForm = (e) => {
     console.log(e.target.value);
-    this.setState({ [e.target.name]: e.target.value });
+    //this.setState({ [e.target.name]: e.target.value });
+    this.setState(
+      Object.assign(this.state.category, { [e.target.name]: e.target.value })
+    );
     // console.log("after update   " + this.state.category.catName);
   };
 
@@ -102,15 +98,20 @@ export class ViewCategory extends Component {
   }
 
   handleClose = () => {
-    let addCatObj = {
-      catName: this.state.catName,
-      patCat: this.state.patCat,
-      catImage: this.state.image,
-      isOffer: this.state.checked,
-      status: this.state.status,
-    };
-    console.log(JSON.stringify(addCatObj));
-
+    console.log(JSON.stringify(this.state.category));
+    CategoryService.updateCategory(this.state.category).then(
+      (resp) => {
+        console.log("category updated  " + resp.data.catName);
+        CategoryService.fetchAllCategories().then((resp) => {
+          console.log("backend categories are " + JSON.stringify(resp.data));
+          //this.state.catList = resp.data;
+          this.setState({ catList: resp.data });
+        });
+      },
+      (error) => {
+        console.error(error.data);
+      }
+    );
     //do backedn edit categorty
 
     this.setState({ shouldOpenDialogue: false });
@@ -213,20 +214,6 @@ export class ViewCategory extends Component {
                   {/* <img src={UserSelfReg} height="80px"></img> */}
                   Category Edit
                 </Typography>
-                {this.state.dataError != null && (
-                  <Box
-                    bgcolor="white"
-                    boxShadow="2"
-                    borderRadius="12px"
-                    textAlign="text"
-                    p="10px"
-                    mt="10px"
-                  >
-                    <Typography color="error">
-                      {this.state.dataError}
-                    </Typography>
-                  </Box>
-                )}
 
                 <TextField
                   id="outlined-required"
@@ -242,6 +229,28 @@ export class ViewCategory extends Component {
                   onChange={this.readForm}
                   value={this.state.category.catName}
                 />
+                <TextField
+                  id="outlined-required"
+                  select
+                  //label="Parent Category"
+                  value={this.state.patCat}
+                  name="patCat"
+                  onChange={this.readForm}
+                  SelectProps={{
+                    native: true,
+                  }}
+                  helperText="Select the Parent Category"
+                  variant="outlined"
+                >
+                  <option value={this.state.category.patCat}>
+                    {this.state.category.patCat}
+                  </option>
+                  {this.state.catList.map((option) => (
+                    <option key={option.catName} value={option.catName}>
+                      {option.catName}
+                    </option>
+                  ))}
+                </TextField>
 
                 <TextField
                   id="component-outlined"
