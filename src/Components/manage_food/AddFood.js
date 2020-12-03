@@ -50,6 +50,8 @@ export class AddFood extends Component {
       },
       checked: false,
       catList: [],
+      image_file: null,
+      image_preview: "",
     };
     // this.state.data.error = null;
     this.readForm = this.readForm.bind(this);
@@ -89,6 +91,19 @@ export class AddFood extends Component {
 
   handleChange = (event) => {
     this.setState({ checked: event.target.checked });
+  };
+
+  // Image Preview Handler
+  handleImagePreview = (e) => {
+    console.log("******************** " + JSON.stringify(e.target.value));
+    let image_as_base64 = URL.createObjectURL(e.target.files[0]);
+    let image_as_files = e.target.files[0];
+    console.log("image file is " + JSON.stringify(image_as_files));
+    this.setState({
+      image_preview: image_as_base64,
+      image_file: image_as_files,
+    });
+    console.log("image file is " + JSON.stringify(this.state.image_file));
   };
 
   render() {
@@ -178,7 +193,7 @@ export class AddFood extends Component {
                     helperText="Description"
                   />
 
-                  <TextField
+                  {/* <TextField
                     id="component-outlined"
                     label="Image"
                     // defaultValue="Hello World"
@@ -188,10 +203,16 @@ export class AddFood extends Component {
                     margin="normal"
                     size="normal"
                     name="image"
-                    // type="file"
-                    onChange={this.readForm}
+                    type="file"
+                    onChange={this.handleImagePreview}
                     helperText="Image"
+                  /> */}
+                  <input
+                    type="file"
+                    name="file"
+                    onChange={this.handleImagePreview}
                   />
+                  <label>Upload file</label>
                 </Box>
               </Grid>
               <Grid item xs={12} sm={6}>

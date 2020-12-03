@@ -22,6 +22,9 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
 import EventSeatRoundedIcon from "@material-ui/icons/EventSeatRounded";
 import MotorcycleRoundedIcon from "@material-ui/icons/MotorcycleRounded";
+import { mdiBikeFast } from "@mdi/js";
+import MotorcycleIcon from "@material-ui/icons/Motorcycle";
+import VisibilityIcon from "@material-ui/icons/Visibility";
 
 import MultiSelectTreeView from "./MultiSelectTreeView";
 import { useEffect } from "react";
@@ -49,6 +52,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ViewFood from "./manage_food/ViewFood";
 import { ExpandLess, ExpandMore, StarBorder } from "@material-ui/icons";
 import FoodCard from "./manage_food/FoodCard";
+import { Link, Redirect } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -132,11 +136,15 @@ export default function CustomerDashboard() {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const [redirect, setRedirect] = React.useState(false);
   const [openMenu, setOpenMenu] = React.useState(false);
   const [openCategory, setOpenCategory] = React.useState(false);
   const [openFoodCategory, setOpenFodCategory] = React.useState(false);
   const [foodList, setFoodList] = React.useState([]);
   const [expanded, setExpanded] = React.useState(false);
+  const [count, setCount] = React.useState(false);
+  const [orderCommand, setOrderCommand] = React.useState(false);
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -160,8 +168,20 @@ export default function CustomerDashboard() {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
+  const handleOrderNow = (food) => {
+    console.log("i am in Order now event" + JSON.stringify(food));
+
+    //setOrderCommand(orderCommand);
+    //setRedirect(true);
+    //return <Link to="/myOrders" />;
+    localStorage.setItem("foodOrder", JSON.stringify(food));
+  };
+
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
+    //count = 100;
+    //setCount(count);
     FoodService.fetchAllFoods().then(
       (resp) => {
         setFoodList(resp.data);
@@ -171,10 +191,11 @@ export default function CustomerDashboard() {
       }
     );
     console.log("food list is " + JSON.stringify(foodList));
-  });
+  }, 100);
 
   return (
-    <div className={classes.root}>
+    // <div className={classes.root}>
+    <div>
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -287,12 +308,57 @@ export default function CustomerDashboard() {
         <div className={classes.drawerHeader} />
       </main>
       <div className={classes.FoodCard_Root}>
-        <Grid container>
+        {/* <Grid container spacing={5}>
           {foodList.map((food) => (
             <Grid item xs={3}>
               <Typography noWrap>
                 <FoodCard />
               </Typography>
+            </Grid>
+          ))}
+        </Grid> */}
+        <Grid container spacing={3}>
+          {foodList.map((food) => (
+            <Grid item xs={6} sm={3}>
+              <Paper>
+                <Card>
+                  <CardActionArea>
+                    <CardMedia
+                      image="/static/images/cards/contemplative-reptile.jpg"
+                      title="Contemplative Reptile"
+                    />
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="h2">
+                        {food.foodName}
+                        <CardActions>
+                          <Button size="small" color="primary">
+                            {/* <CheckIcon /> */}
+                            {food.status}
+                          </Button>
+                          <Button size="small" color="primary">
+                            <LocalOfferIcon />
+                            Offer: {food.offer}
+                          </Button>
+                        </CardActions>
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                  <CardActions>
+                    <Button
+                      size="small"
+                      color="primary"
+                      onClick={() => {
+                        handleOrderNow(food);
+                      }}
+                    >
+                      <MotorcycleIcon /> Order Now
+                    </Button>
+                    <Button size="small" color="primary">
+                      <VisibilityIcon /> History
+                    </Button>
+                  </CardActions>
+                </Card>
+              </Paper>
             </Grid>
           ))}
         </Grid>
@@ -301,6 +367,7 @@ export default function CustomerDashboard() {
         <FoodCard />
         <FoodCard />
         <FoodCard /> */}
+        {redirect && <Redirect to="/myOrders" />}
       </div>
     </div>
   );

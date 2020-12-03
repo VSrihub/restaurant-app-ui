@@ -123,6 +123,7 @@ export default function MerchantDashboard() {
   const [openFoodCategory, setOpenFodCategory] = React.useState(false);
   const [foodList, setFoodList] = React.useState([]);
   const [expanded, setExpanded] = React.useState(false);
+  const [count, setCount] = React.useState(0);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -148,6 +149,7 @@ export default function MerchantDashboard() {
   };
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
+    setCount(100);
     FoodService.fetchAllFoods().then(
       (resp) => {
         setFoodList(resp.data);
@@ -157,7 +159,7 @@ export default function MerchantDashboard() {
       }
     );
     console.log("food list is " + JSON.stringify(foodList));
-  });
+  }, []);
 
   return (
     <div className={classes.root}>
